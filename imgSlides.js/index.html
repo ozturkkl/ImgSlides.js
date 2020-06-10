@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>imgSlides Demo</title>
+    <link rel="stylesheet" href="imgSlides.css">
+    <script src="imgSlides.js" defer></script>
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .imgSlides {
+            margin: 0 50px;
+            width: 200px;
+            height: 200px;
+            z-index: 1;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .buttons {
+            position: absolute;
+            width: 100vw;
+        }
+        .buttons button{
+            padding: 20px;
+            margin: 0 50px;
+            background-color: #262626;
+            color: #EDEDED;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .buttons button:first-child{
+            float: left;
+        }
+        .buttons button:last-child{
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ------------------------------- USAGE ------------------------------- -->
+    <div class="imgSlides">
+        <img src="img/sample_wide.png" alt="">
+        <img src="img/sample_tall.png" alt="">
+        <img src="img/sample_square.png" alt="">
+    </div>
+    
+    <div class="imgSlides">
+        <img src="img/sample_wide.png" alt="">
+        <img src="img/sample_tall.png" alt="">
+        <img src="img/sample_square.png" alt="">
+    </div>
+    <!-- ------------------------------- USAGE ------------------------------- -->
+
+    <div class="buttons">
+        <button onclick="addMorePictures(0)">Add more pictures left</button>
+        <button onclick="addMorePictures(1)">Add more pictures right</button>
+    </div>
+    <footer>
+        Arrow icon made by <a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a> from
+        <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    </footer>
+</body>
+
+<script>
+    function addMorePictures(slide){
+        const imgSlides = document.querySelectorAll(".imgSlidesCanvas")[slide]
+        
+        const newImage = document.createElement("img")
+        const newImage1 = document.createElement("img")
+        const newImage2 = document.createElement("img")
+        
+        newImage.setAttribute("src", "img/sample_wide.png")
+        imgSlides.append(newImage)
+        newImage1.setAttribute("src", "img/sample_tall.png")
+        imgSlides.append(newImage1)
+        newImage2.setAttribute("src", "img/sample_square.png")
+        imgSlides.append(newImage2)
+
+        console.log("More pictures added...")
+    }
+
+</script>
+
+</html>
