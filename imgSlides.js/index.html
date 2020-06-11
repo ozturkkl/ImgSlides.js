@@ -19,8 +19,6 @@
 
         .imgSlides {
             margin: 0 50px;
-            width: 200px;
-            height: 200px;
             z-index: 1;
         }
 
@@ -32,19 +30,21 @@
         .buttons {
             position: absolute;
             width: 100vw;
+            display: flex;
+            flex-direction: column;
         }
-        .buttons button{
+        .buttons div button{
             padding: 20px;
-            margin: 0 50px;
+            margin: 20px 50px;
             background-color: #262626;
             color: #EDEDED;
             font-weight: bold;
             border-radius: 5px;
         }
-        .buttons button:first-child{
+        .buttons div button:first-child{
             float: left;
         }
-        .buttons button:last-child{
+        .buttons div button:last-child{
             float: right;
         }
     </style>
@@ -53,9 +53,6 @@
 <body>
     <!-- ------------------------------- USAGE ------------------------------- -->
     <div class="imgSlides">
-        <img src="img/sample_wide.png" alt="">
-        <img src="img/sample_tall.png" alt="">
-        <img src="img/sample_square.png" alt="">
     </div>
     
     <div class="imgSlides">
@@ -66,8 +63,14 @@
     <!-- ------------------------------- USAGE ------------------------------- -->
 
     <div class="buttons">
-        <button onclick="addMorePictures(0)">Add more pictures left</button>
-        <button onclick="addMorePictures(1)">Add more pictures right</button>
+        <div>
+            <button onclick="addMorePictures(0)">Add more pictures left</button>
+            <button onclick="addMorePictures(1)">Add more pictures right</button>
+        </div>
+        <div >
+            <button onclick="removePictures(0)">Remove pictures from left</button>
+            <button onclick="removePictures(1)">Remove pictures from right</button>
+        </div>
     </div>
     <footer>
         Arrow icon made by <a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a> from
@@ -83,14 +86,24 @@
         const newImage1 = document.createElement("img")
         const newImage2 = document.createElement("img")
         
+        newImage2.setAttribute("src", "img/sample_square.png")
+        imgSlides.append(newImage2)
         newImage.setAttribute("src", "img/sample_wide.png")
         imgSlides.append(newImage)
         newImage1.setAttribute("src", "img/sample_tall.png")
         imgSlides.append(newImage1)
-        newImage2.setAttribute("src", "img/sample_square.png")
-        imgSlides.append(newImage2)
 
         console.log("More pictures added...")
+    }
+    
+    function removePictures(slide){
+        const imgSlides = document.querySelectorAll(".imgSlidesCanvas")[slide]
+        
+        if (imgSlides.lastChild) {
+            imgSlides.lastChild.remove()
+            console.log("One picture removed from the slide.")
+        }
+
     }
 
 </script>

@@ -55,7 +55,6 @@ function initializeSlides() {
         let images = []
         images = getImages(slideContainer)
 
-        slideContainer.innerHTML = ""
         createSlider(slideContainer)
         putImages(slideContainer, images)
     });
@@ -70,7 +69,6 @@ function refreshSlides() {
         let images = []
         images = getImages(slideContainer.children[1])
 
-        slideContainer.innerHTML = ""
         createSlider(slideContainer)
         putImages(slideContainer, images)
         createButtonListeners(slideContainer, images)
@@ -90,16 +88,29 @@ function getImages(container, images) {
 function putImages(container, images) {
     images.forEach((image, index) => {
         container.children[1].appendChild(image)
+
+        const indicator = document.createElement("li")
+        container.children[3].appendChild(indicator)
+        setAppropriateSize(container)
+
         if (!slideInitialized && index === 0)
             image.classList.add("active")
+
+        if (image.classList.contains("active"))
+            indicator.classList.add("active")
     })
+    if (!images.some((image) => { return image.classList.contains("active") }) && images.length > 0) {
+        images[0].classList.add("active")
+        container.children[3].children[0].classList.add("active")
+    }
 }
 
 function createButtonListeners(container, images) {
     const btnPrev = container.children[0]
     const btnNext = container.children[2]
+    const indicators = Array.from(container.children[3].children)
 
-    if (images.length === 1)
+    if (images.length < 2)
         return;
 
     btnPrev.addEventListener("click", () => {
@@ -110,6 +121,10 @@ function createButtonListeners(container, images) {
             const imageActive = images.find(imageActive => imageActive.classList.contains("active"))
             imageActive.previousSibling.classList.add("active")
             imageActive.classList.remove("active")
+
+            const indicatorActive = indicators.find(indicator => indicator.classList.contains("active"))
+            indicatorActive.previousSibling.classList.add("active")
+            indicatorActive.classList.remove("active")
             return;
         }
     })
@@ -121,16 +136,42 @@ function createButtonListeners(container, images) {
             const imageActive = images.find(imageActive => imageActive.classList.contains("active"))
             imageActive.nextSibling.classList.add("active")
             imageActive.classList.remove("active")
+
+            const indicatorActive = indicators.find(indicator => indicator.classList.contains("active"))
+            indicatorActive.nextSibling.classList.add("active")
+            indicatorActive.classList.remove("active")
             return;
         }
+    })
+    indicators.forEach(indicator => {
+        indicator.addEventListener("click", () => {
+            const indicatorClickIndex = indicators.findIndex(indicatorToFind => indicatorToFind === indicator)
+            images.forEach(image => {
+                image.classList.remove("active")
+            })
+            indicators.forEach(indicator => {
+                indicator.classList.remove("active")
+            })
+            images[indicatorClickIndex].classList.add("active")
+            indicators[indicatorClickIndex].classList.add("active")
+
+        })
     })
 }
 
 function createSlider(container) {
+    container.innerHTML = ""
+
     container.appendChild(createPrevButton())
     container.appendChild(createCanvas())
     container.appendChild(createNextButton())
+    container.appendChild(createIndicator())
     setAppropriateSize(container)
+}
+
+function createIndicator() {
+    const indicatorContainer = document.createElement("ul")
+    return indicatorContainer
 }
 
 function createPrevButton() {
@@ -151,9 +192,17 @@ function createNextButton() {
     return btnNext
 }
 
-function setAppropriateSize(container){
+function setAppropriateSize(container) {
     const shortestEdge = (container.clientHeight < container.clientWidth) ? container.clientHeight : container.clientWidth
+
     container.style.borderWidth = shortestEdge / 20 + "px"
+
     container.children[0].children[0].style.height = container.children[2].children[0].style.height = shortestEdge / 8 + "px"
+
+    container.children[3].style.height = shortestEdge / 25 + "px"
+    container.children[3].style.margin = shortestEdge / 25 * 2 + "px 0px"
+    Array.from(container.children[3].children).forEach((li) => {
+        li.style.width = shortestEdge / 25 + "px"
+    })
 }
 
