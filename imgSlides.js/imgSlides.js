@@ -47,27 +47,14 @@ const observer = new MutationObserver(imageListChanged)
 
 // INITIALIZE SLIDER FOR EACH CONTAINER WITH ".imgSlides"
 const slideContainers = document.querySelectorAll(".imgSlides")
-let slideInitialized = false
-initializeSlides()
+initSlides()
 
-function initializeSlides() {
-    slideContainers.forEach((slideContainer) => {
-        let images = []
-        images = getImages(slideContainer)
-
-        createSlider(slideContainer)
-        putImages(slideContainer, images)
-    });
-    refreshSlides()
-    slideInitialized = true;
-}
-
-function refreshSlides() {
+function initSlides() {
     observer.disconnect()
 
     slideContainers.forEach((slideContainer) => {
         let images = []
-        images = getImages(slideContainer.children[1])
+        images = getImages(slideContainer)
 
         createSlider(slideContainer)
         putImages(slideContainer, images)
@@ -78,12 +65,28 @@ function refreshSlides() {
     });
 }
 
-function imageListChanged(mutationsList, observer) {
-    refreshSlides()
+function imageListChanged() {
+    initSlides()
 }
 
-function getImages(container, images) {
-    return Array.from(container.children)
+function getImages(container) {
+    let images = []
+
+    let containerCanvasElements
+    if (container.children[1]) {
+        containerCanvasElements = Array.from(container.children[1].children)
+        containerCanvasElements.forEach(element => {
+            if (element.nodeName === "IMG")
+                images.push(element)
+        })
+    }
+
+    const containerElements = Array.from(container.children)
+    containerElements.forEach(element => {
+        if (element.nodeName === "IMG")
+            images.push(element)
+    })
+    return images
 }
 function putImages(container, images) {
     images.forEach((image, index) => {
@@ -92,9 +95,6 @@ function putImages(container, images) {
         const indicator = document.createElement("li")
         container.children[3].appendChild(indicator)
         setAppropriateSize(container)
-
-        if (!slideInitialized && index === 0)
-            image.classList.add("active")
 
         if (image.classList.contains("active"))
             indicator.classList.add("active")
