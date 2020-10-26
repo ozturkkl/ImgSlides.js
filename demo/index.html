@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>imgSlides Demo</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../dist/imgSlides.css">
@@ -19,7 +19,7 @@
             height: 100vh;
             align-items: center;
             justify-content: center;
-            background-color: #c8c8c8;
+            background-color: #b9daff;
             font-family: 'Roboto', sans-serif;
         }
 
@@ -108,19 +108,20 @@
         </div>
         <div>
             <label for="#rangeLeftHeight">Left Slide Height: </label>
-            <input id="rangeLeftHeight" type="range" min="50" max="900" oninput="setSlideHeight(this.value, '#slideLeft')"
-                onchange="setSlideHeight(this.value, '#slideLeft')">
+            <input id="rangeLeftHeight" type="range" min="50" max="900"
+                oninput="setSlideHeight(this.value, '#slideLeft')" onchange="setSlideHeight(this.value, '#slideLeft')">
         </div>
     </div>
     <div class="slideControls right">
         <div>
             <label for="#rangeRightWidth">Right Slide Width: </label>
-            <input id="rangeRightWidth" type="range" min="50" max="900" oninput="setSlideWidth(this.value, '#slideRight')"
-                onchange="setSlideWidth(this.value, '#slideRight')">
+            <input id="rangeRightWidth" type="range" min="50" max="900"
+                oninput="setSlideWidth(this.value, '#slideRight')" onchange="setSlideWidth(this.value, '#slideRight')">
         </div>
         <div>
             <label for="#rangeRightHeight">Right Slide Height: </label>
-            <input id="rangeRightHeight" type="range" min="50" max="900" oninput="setSlideHeight(this.value, '#slideRight')"
+            <input id="rangeRightHeight" type="range" min="50" max="900"
+                oninput="setSlideHeight(this.value, '#slideRight')"
                 onchange="setSlideHeight(this.value, '#slideRight')">
         </div>
     </div>
@@ -157,17 +158,18 @@
     }
 
     function removePictures(slide) {
-        let imgSlide = null
+        let images = null
         if (slide === 'left')
-            imgSlide = document.querySelector("#slideLeft .imgSlidesCanvas")
+            images = document.querySelector("#slideLeft .imgSlidesCanvas")
         if (slide === 'right')
-            imgSlide = document.querySelector("#slideRight .imgSlidesCanvas")
+            images = document.querySelector("#slideRight .imgSlidesCanvas")
 
-        if (imgSlide.lastChild) {
-            imgSlide.lastChild.remove()
+        if (images.lastChild) {
+            images.lastChild.remove()
             console.log("One picture removed from the slide.")
         }
 
+        console.log(images.children)
     }
 
     function setSlideWidth(value, selector) {
