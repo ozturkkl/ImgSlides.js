@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>imgSlides Demo</title>
-    <link rel="stylesheet" href="/dist/imgSlides.css">
-    <script src="/dist/imgSlides.js" defer></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../dist/imgSlides.css">
+    <script src="../dist/imgSlides.js" defer></script>
 
     <style>
         body {
@@ -15,6 +19,14 @@
             height: 100vh;
             align-items: center;
             justify-content: center;
+            background-color: #c8c8c8;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body>h1 {
+            position: absolute;
+            top: 0px;
+            font-size: 50px;
         }
 
         .imgSlides {
@@ -33,7 +45,8 @@
             display: flex;
             flex-direction: column;
         }
-        .buttons div button{
+
+        .buttons div button {
             padding: 20px;
             margin: 20px 50px;
             background-color: #262626;
@@ -41,35 +54,85 @@
             font-weight: bold;
             border-radius: 5px;
         }
-        .buttons div button:first-child{
+
+        .buttons div button:first-child {
             float: left;
         }
-        .buttons div button:last-child{
+
+        .buttons div button:last-child {
             float: right;
+        }
+
+        .slideControls {
+            position: absolute;
+            font-weight: bold;
+        }
+
+        .slideControls>div {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+            justify-content: center;
+        }
+
+        .slideControls.right {
+            right: 50px;
+            top: 400px;
+        }
+
+        .slideControls.left {
+            left: 50px;
+            top: 400px;
         }
     </style>
 </head>
 
 <body>
+    <h1>Welcome to Image Slides Demo!</h1>
     <!-- ------------------------------- USAGE ------------------------------- -->
-    <div class="imgSlides">
+    <div class="imgSlides" id="slideLeft">
     </div>
-    
-    <div class="imgSlides">
-        <img src="img/sample_wide.png" alt="">
-        <img src="img/sample_tall.png" alt="">
-        <img src="img/sample_square.png" alt="">
+
+    <div class="imgSlides" id="slideRight">
+        <img src="img/rx7-1.jpg" alt="">
+        <img src="img/rx7-2.jpg" alt="">
+        <img src="img/rx7-3.jpg" alt="">
     </div>
     <!-- ------------------------------- USAGE ------------------------------- -->
 
+    <div class="slideControls left">
+        <div>
+            <label for="#rangeLeftWidth">Left Slide Width: </label>
+            <input id="rangeLeftWidth" type="range" min="50" max="900" oninput="setSlideWidth(this.value, '#slideLeft')"
+                onchange="setSlideWidth(this.value, '#slideLeft')">
+        </div>
+        <div>
+            <label for="#rangeLeftHeight">Left Slide Height: </label>
+            <input id="rangeLeftHeight" type="range" min="50" max="900" oninput="setSlideHeight(this.value, '#slideLeft')"
+                onchange="setSlideHeight(this.value, '#slideLeft')">
+        </div>
+    </div>
+    <div class="slideControls right">
+        <div>
+            <label for="#rangeRightWidth">Right Slide Width: </label>
+            <input id="rangeRightWidth" type="range" min="50" max="900" oninput="setSlideWidth(this.value, '#slideRight')"
+                onchange="setSlideWidth(this.value, '#slideRight')">
+        </div>
+        <div>
+            <label for="#rangeRightHeight">Right Slide Height: </label>
+            <input id="rangeRightHeight" type="range" min="50" max="900" oninput="setSlideHeight(this.value, '#slideRight')"
+                onchange="setSlideHeight(this.value, '#slideRight')">
+        </div>
+    </div>
+
     <div class="buttons">
         <div>
-            <button onclick="addMorePictures(0)">Add more pictures left</button>
-            <button onclick="addMorePictures(1)">Add more pictures right</button>
+            <button onclick="addMorePictures('left')">Add more pictures left</button>
+            <button onclick="addMorePictures('right')">Add more pictures right</button>
         </div>
-        <div >
-            <button onclick="removePictures(0)">Remove pictures from left</button>
-            <button onclick="removePictures(1)">Remove pictures from right</button>
+        <div>
+            <button onclick="removePictures('left')">Remove pictures from left</button>
+            <button onclick="removePictures('right')">Remove pictures from right</button>
         </div>
     </div>
     <footer>
@@ -79,32 +142,44 @@
 </body>
 
 <script>
-    function addMorePictures(slide){
-        const imgSlides = document.querySelectorAll(".imgSlides")[slide]
-        
-        const newImage = document.createElement("img")
-        const newImage1 = document.createElement("img")
-        const newImage2 = document.createElement("img")
-        
-        newImage2.setAttribute("src", "img/sample_square.png")
-        imgSlides.append(newImage2)
-        newImage.setAttribute("src", "img/sample_wide.png")
-        imgSlides.append(newImage)
-        newImage1.setAttribute("src", "img/sample_tall.png")
-        imgSlides.append(newImage1)
+    function addMorePictures(slide) {
+        let imgSlide = null
+        if (slide === 'left')
+            imgSlide = document.querySelector("#slideLeft")
+        if (slide === 'right')
+            imgSlide = document.querySelector("#slideRight")
+
+        imgSlide.insertAdjacentHTML('beforeend', '<img src="img/rx7-1.jpg" alt="">');
+        imgSlide.insertAdjacentHTML('beforeend', '<img src="img/rx7-2.jpg" alt="">');
+        imgSlide.insertAdjacentHTML('beforeend', '<img src="img/rx7-3.jpg" alt="">');
 
         console.log("More pictures added...")
     }
-    
-    function removePictures(slide){
-        const imgSlides = document.querySelectorAll(".imgSlidesCanvas")[slide]
-        
-        if (imgSlides.lastChild) {
-            imgSlides.lastChild.remove()
+
+    function removePictures(slide) {
+        let imgSlide = null
+        if (slide === 'left')
+            imgSlide = document.querySelector("#slideLeft .imgSlidesCanvas")
+        if (slide === 'right')
+            imgSlide = document.querySelector("#slideRight .imgSlidesCanvas")
+
+        if (imgSlide.lastChild) {
+            imgSlide.lastChild.remove()
             console.log("One picture removed from the slide.")
         }
 
     }
+
+    function setSlideWidth(value, selector) {
+        document.querySelector(selector).style.width = value + "px"
+        initSlides()
+    }
+    function setSlideHeight(value, selector) {
+        document.querySelector(selector).style.height = value + "px"
+        initSlides()
+    }
+
+
 
 </script>
 
