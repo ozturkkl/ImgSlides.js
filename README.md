@@ -1,6 +1,8 @@
 # imgSlides.js
 A responsive easy to use image presentation tool with no external dependencies. Developed initially to display portraits.
 
+![image](https://user-images.githubusercontent.com/51798197/129019556-fefe90bf-193f-48d4-b919-51263e004ed4.png)
+
 ## Demo
 Click [here](https://ozturkkl.github.io/ImgSlides.js/demo/index.html) to view the demo.
 
